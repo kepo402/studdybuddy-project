@@ -9,21 +9,26 @@ openai.api_key = 'YOUR_OPENAI_API_KEY'
 @app.route('/webhook', methods=['POST'])
 def webhook():
     # Extract the incoming message data from Twilio
-    data = request.form
-    user_message = data.get('Body', '').strip()
+    try:
 
-    # TODO: Implement the logic to interact with the OpenAI language model
-    # You can use the OpenAI API to generate responses
-    # Replace the following line with your actual implementation
-    bot_response = get_bot_response(user_message)
+       data = request.form
+       user_message = data.get('Body', '').strip()
 
-    # Respond to Twilio
-    response = {
-        "from": "whatsapp:+14155238886",  # Your Twilio WhatsApp number
-        "to": "whatsapp:+2349027462016",
-        "body": bot_response
-    }
-    return jsonify(response)
+       # TODO: Implement the logic to interact with the OpenAI language model
+       # You can use the OpenAI API to generate responses
+       # Replace the following line with your actual implementation
+       bot_response = get_bot_response(user_message)
+
+       # Respond to Twilio
+       response = {
+           "from": "whatsapp:+14155238886",  # Your Twilio WhatsApp number
+           "to": "whatsapp:+2349027462016",
+           "body": bot_response
+        }
+       return jsonify(response)
+    except Exception as e:
+        #handle exception error
+        return jsonify({"error": str(e)}), 500
 
 def get_bot_response(user_message):
     # Make a request to OpenAI's GPT-3 model
